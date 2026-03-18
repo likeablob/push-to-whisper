@@ -5,8 +5,9 @@ from push_to_whisper.config import Settings
 
 def test_settings_default_values():
     """Verify that default values are set correctly."""
-    s = Settings()
-    assert s.whisper.model == "tiny"
+    # Use ignore_config=True to avoid loading local user config during tests
+    s = Settings.load(ignore_config=True)
+    assert s.whisper.whisper_cpp.enabled is True
     assert s.storage.filename_template == "{{ date }}/{{ date }}-{{ time }}"
 
 
@@ -15,7 +16,7 @@ def test_settings_yaml_load(tmp_path):
     config_file = tmp_path / "config.yaml"
 
     config_data = {
-        "whisper": {"model": "medium", "language": "en"},
+        "whisper": {"openai": {"model": "medium", "language": "en"}},
         "storage": {"base_dir": "/tmp/ptw_test"},
     }
 
@@ -24,18 +25,18 @@ def test_settings_yaml_load(tmp_path):
 
     # Explicitly specify the file using Settings.load()
     s = Settings.load(config_file)
-    assert s.whisper.model == "medium"
-    assert s.whisper.language == "en"
+    assert s.whisper.openai.model == "medium"
+    assert s.whisper.openai.language == "en"
     assert s.storage.base_dir == "/tmp/ptw_test"
 
 
 def test_settings_env_override(monkeypatch):
     """Verify environment variable overrides."""
-    monkeypatch.setenv("WHISPER__MODEL", "large")
+    monkeypatch.setenv("WHISPER__OPENAI__MODEL", "large")
     monkeypatch.setenv("STORAGE__BASE_DIR", "/env/override")
 
-    s = Settings()
-    assert s.whisper.model == "large"
+    s = Settings.load(ignore_config=True)
+    assert s.whisper.openai.model == "large"
     assert s.storage.base_dir == "/env/override"
 
 
@@ -48,7 +49,7 @@ def test_settings_load_method(tmp_path):
     # 2. Path specified
     cfg = tmp_path / "custom.yaml"
     with open(cfg, "w") as f:
-        yaml.dump({"whisper": {"model": "custom-model"}}, f)
+        yaml.dump({"whisper": {"openai": {"model": "custom-model"}}}, f)
 
     s_custom = Settings.load(cfg)
-    assert s_custom.whisper.model == "custom-model"
+    assert s_custom.whisper.openai.model == "custom-model"

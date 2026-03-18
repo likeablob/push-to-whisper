@@ -1,4 +1,5 @@
 import logging
+import mimetypes
 from pathlib import Path
 from typing import Optional
 
@@ -29,8 +30,21 @@ class WhisperOpenAIClient(BaseWhisperClient):
         url = f"{self.base_url}/audio/transcriptions"
         headers = {"Authorization": f"Bearer {self.api_key}"}
 
+        mime_type, _ = mimetypes.guess_type(audio_path)
+        if not mime_type:
+            # Fallback for common types if guess_type fails
+            ext = audio_path.suffix.lower()
+            if ext == ".wav":
+                mime_type = "audio/wav"
+            elif ext == ".ogg":
+                mime_type = "audio/ogg"
+            elif ext == ".mp3":
+                mime_type = "audio/mpeg"
+            else:
+                mime_type = "application/octet-stream"
+
         with open(audio_path, "rb") as f:
-            files = {"file": (audio_path.name, f, "audio/wav")}
+            files = {"file": (audio_path.name, f, mime_type)}
             data = {
                 "model": self.model,
                 "response_format": "text",
@@ -43,5 +57,6 @@ class WhisperOpenAIClient(BaseWhisperClient):
                 url, headers=headers, files=files, data=data, timeout=120
             )
             response.raise_for_status()
+            logger.info(response.text)
 
             return response.text.strip()

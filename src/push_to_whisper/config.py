@@ -137,8 +137,8 @@ class Settings(BaseSettings):
                 preferred_trigger="ALT+SHIFT+x",
                 description="Transcription to Markdown",
                 steps=[
-                    PipelineStep(type="transcode"),
                     PipelineStep(type="transcribe"),
+                    PipelineStep(type="transcode"),
                     PipelineStep(type="save_audio"),
                     PipelineStep(type="save_markdown"),
                     PipelineStep(type="apprise"),
@@ -149,8 +149,8 @@ class Settings(BaseSettings):
                 preferred_trigger="ALT+SHIFT+c",
                 description="Transcription to Clipboard",
                 steps=[
-                    PipelineStep(type="transcode"),
                     PipelineStep(type="transcribe"),
+                    PipelineStep(type="transcode"),
                     PipelineStep(type="copy_clipboard"),
                     PipelineStep(type="apprise"),
                 ],
