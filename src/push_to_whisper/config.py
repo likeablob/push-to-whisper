@@ -71,7 +71,7 @@ class WhisperConfig(BaseModel):
 class LLMConfig(BaseModel):
     """LLM connection settings."""
 
-    model: str = "gemini/gemini-2.5-flash"
+    model: str = "gemini:gemini-2.5-flash"
     api_key: Optional[str] = None
     base_url: Optional[str] = None
 

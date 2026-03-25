@@ -3,8 +3,8 @@ import re
 from pathlib import Path
 from typing import Optional
 
-import litellm
 import patch_ng
+from any_llm import completion
 
 logger = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ class LLMClient:
     def refine_text(
         self, text: str, mode: str = "refine", prompt_override: Optional[str] = None
     ) -> str:
-        """Refine and format text using LiteLLM"""
+        """Refine and format text using any-llm"""
         if not self.settings.llm.model:
             return text
 
@@ -37,20 +37,20 @@ class LLMClient:
             "model": self.settings.llm.model,
             "messages": messages,
             "api_key": self.settings.llm.api_key,
-            "base_url": self.settings.llm.base_url,
+            "api_base": self.settings.llm.base_url,
         }
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
         try:
-            response = litellm.completion(**kwargs)
+            response = completion(**kwargs)
             refined_text = response.choices[0].message.content.strip()
             return refined_text
         except Exception as e:
-            logger.error(f"LiteLLM error during refinement: {e}")
+            logger.error(f"LLM error during refinement: {e}")
             return text
 
     def generate_patch(self, instruction: str, current_content: str) -> str:
-        """Generate a patch in udiff format using LiteLLM"""
+        """Generate a patch in udiff format using any-llm"""
         if not self.settings.llm.model:
             return ""
 
@@ -68,13 +68,12 @@ class LLMClient:
             "model": self.settings.llm.model,
             "messages": messages,
             "api_key": self.settings.llm.api_key,
-            "base_url": self.settings.llm.base_url,
+            "api_base": self.settings.llm.base_url,
         }
-        # Remove None values (let LiteLLM use its defaults)
         kwargs = {k: v for k, v in kwargs.items() if v is not None}
 
         try:
-            response = litellm.completion(**kwargs)
+            response = completion(**kwargs)
             patch_text = response.choices[0].message.content.strip()
 
             # Remove Markdown code blocks (```diff ... ```) if present
@@ -85,7 +84,7 @@ class LLMClient:
 
             return patch_text
         except Exception as e:
-            logger.error(f"LiteLLM error: {e}")
+            logger.error(f"LLM error: {e}")
             return ""
 
     def apply_patch(self, target_file: Path, patch_text: str) -> bool:

@@ -80,7 +80,7 @@ def init_action(args):
     )
     yaml_text = yaml_text.replace(
         "llm:",
-        "# LLM Connection Settings (LiteLLM)\n# See: https://docs.litellm.ai/docs/providers\nllm:",
+        "# LLM Connection Settings (any-llm)\n# See: https://mozilla-ai.github.io/any-llm/providers/\nllm:",
     )
     yaml_text = yaml_text.replace(
         "defaults:", "# Default options for each pipeline step type\ndefaults:"

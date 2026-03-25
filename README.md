@@ -10,7 +10,7 @@ A smart voice memo tool aka **`push-to-stt-to-md-to-llm-to-clipboard-or-whatever
 - **Save** the recording as a `.wav` file (e.g., directly into your Obsidian vault).
 - **Transcode** it into `.ogg` or other formats for efficiency (via ffmpeg).
 - **Transcribe** it into Markdown using Whisper (Currently supports `whisper.cpp` server).
-- **Refine** the text using LLM APIs like OpenAI, Gemini, or Ollama (via LiteLLM).
+- **Refine** the text using LLM APIs like OpenAI, Gemini, or Ollama (via any-llm).
   - Auto tagging, auto summarization, etc.
 - **Copy** the result to your clipboard automatically.
 - **Notify** success or send results to notification services like Slack, Discord, or Ntfy (via Apprise).
@@ -37,7 +37,7 @@ Every step above is modular. You can combine them to build your own custom workf
 
 ## Configuration
 
-The configuration file is located at `~/.config/push-to-whisper/config.yaml`. You can customize the Whisper endpoint, LLM API keys (LiteLLM), and processing pipelines.
+The configuration file is located at `~/.config/push-to-whisper/config.yaml`. You can customize the Whisper endpoint, LLM API keys (any-llm), and processing pipelines.
 
 To re-initialize or export the default configuration:
 ```bash
