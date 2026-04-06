@@ -63,6 +63,10 @@ On Linux (KDE/GNOME), shortcuts are managed by the system. After running `instal
 - **Linting**: `uv run ruff check . --fix`
 - **Testing**: `uv run pytest`
 
+## Related Projects
+
+- [likeablob/parakeet-api](https://github.com/likeablob/parakeet-api) - Whisper-compatible API for Parakeet. < 1sec transcoding on CPU!
+
 ## License
 
 MIT
