@@ -30,6 +30,10 @@ dbus = [
     "PySide6>=6.8.1",
 ]
 
+[project.urls]
+Documentation = "https://github.com/likeablob/push-to-whisper/"
+Source = "https://github.com/likeablob/push-to-whisper/"
+
 [project.scripts]
 push-to-whisper = "push_to_whisper.cli:main"
 
