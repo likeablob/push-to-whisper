@@ -65,7 +65,7 @@ On Linux (KDE/GNOME), shortcuts are managed by the system. After running `instal
 
 ## Related Projects
 
-- [likeablob/parakeet-api](https://github.com/likeablob/parakeet-api) - Whisper-compatible API for Parakeet. < 1sec transcoding on CPU!
+- [likeablob/parakeet-api](https://github.com/likeablob/parakeet-api) - Whisper-compatible API for Parakeet. < 1sec STT on CPU!
 
 ## License
 
